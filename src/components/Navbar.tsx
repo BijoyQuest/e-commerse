@@ -4,10 +4,12 @@ import { Menu, ShoppingCart, Search, X, User, Moon, Sun } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useCartStore, useThemeStore } from '../lib/store';
 import CartDrawer from './CartDrawer';
+import SearchModal from './SearchModal';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
   const { items, fetchCart } = useCartStore();
   const { isDarkMode, toggleDarkMode } = useThemeStore();
@@ -61,7 +63,10 @@ export default function Navbar() {
               >
                 {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
               </button>
-              <button className={`p-2 ${isDarkMode ? 'text-gray-300 hover:text-red-400' : 'text-gray-700 hover:text-red-900'}`}>
+              <button 
+                onClick={() => setIsSearchOpen(true)}
+                className={`p-2 ${isDarkMode ? 'text-gray-300 hover:text-red-400' : 'text-gray-700 hover:text-red-900'}`}
+              >
                 <Search size={24} />
               </button>
               <button className="p-2 relative" onClick={() => setIsCartOpen(true)}>
@@ -117,6 +122,7 @@ export default function Navbar() {
       </nav>
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 }
